@@ -1,0 +1,57 @@
+RGB to HSL
+Obtaining HSL values from RGB or hex is a bit more challenging because there’s a larger formula involved. First, we must divide the red, green, and blue by 255 to use values between 0 and 1. Then we find the minimum and maximum of those values (cmin and cmax) as well as the difference between them (delta). We need that result as part of calculating the hue and saturation. Right after the delta, let’s initialize the hue (h), saturation (s), and lightness (l).
+
+function RGBToHSL(r,g,b) {
+  // Make r, g, and b fractions of 1
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  // Find greatest and smallest channel values
+  let cmin = Math.min(r,g,b),
+      cmax = Math.max(r,g,b),
+      delta = cmax - cmin,
+      h = 0,
+      s = 0,
+      l = 0;
+}
+Next, we need to calculate the hue, which is to be determined by the greatest channel value in cmax (or if all channels are the same). If there is no difference between the channels, the hue will be 0. If cmax is the red, then the formula will be ((g - b) / delta) % 6. If green, then (b - r) / delta + 2. Then, if blue, (r - g) / delta + 4. Finally, multiply the result by 60 (to get the degree value) and round it. Since hues shouldn’t be negative, we add 360 to it, if needed.
+
+function RGBToHSL(r,g,b) {
+  ...
+  // Calculate hue
+  // No difference
+  if (delta == 0)
+    h = 0;
+  // Red is max
+  else if (cmax == r)
+    h = ((g - b) / delta) % 6;
+  // Green is max
+  else if (cmax == g)
+    h = (b - r) / delta + 2;
+  // Blue is max
+  else
+    h = (r - g) / delta + 4;
+
+  h = Math.round(h * 60);
+    
+  // Make negative hues positive behind 360°
+  if (h < 0)
+      h += 360;
+}
+All that’s left is the saturation and lightness. Let’s calculate the lightness before we do the saturation, as the saturation will depend on it. It’s the sum of the maximum and minimum channel values cut in half ((cmax + cmin) / 2). Then delta will determine what the saturation will be. If it’s 0 (no difference between cmax and cmin), then the saturation is automatically 0. Otherwise, it’ll be 1 minus the absolute value of twice the lightness minus 1 (1 - Math.abs(2 * l - 1)). Once we have these values, we must convert them to values out of 100%, so we multiply them by 100 and round to the nearest tenth. Now we can string together our hsl().
+
+function RGBToHSL(r,g,b) {
+  ...
+  // Calculate lightness
+  l = (cmax + cmin) / 2;
+
+  // Calculate saturation
+  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+    
+  // Multiply l and s by 100
+  s = +(s * 100).toFixed(1);
+  l = +(l * 100).toFixed(1);
+
+  return "hsl(" + h + "," + s + "%," + l + "%)";
+}
