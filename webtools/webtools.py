@@ -71,6 +71,18 @@ def hex_to_decimal(c):
     return sixteens + ones
 
 
+def get_background_from_hsl(hsl):
+    h, s, l = hsl
+    l = 97
+    return (h, s, l)
+
+
+def get_text_from_hsl(hsl):
+    h, s, l = hsl
+    l = 10
+    return (h, s, l)
+
+
 def rgb_to_hsl(rgb):
     """ receives rgb as tuple -> returns hsl as tuuple """
     r, g, b = rgb
@@ -113,8 +125,8 @@ def rgb_to_hsl(rgb):
 
     # convert s & l to values out of 100%
     # multiply them by 100 and round to the nearest tenth
-    s = round(s * 100, 1)
-    l = round(l * 100, 1)
+    s = round(s * 100)
+    l = round(l * 100)
 
     return (h, s, l)
 
@@ -146,7 +158,7 @@ def extract_rgb_from_string(rgb):
     return output[0], output[1], output[2]
 
 
-def color_randomizer():
+def random_rgb():
     """ generates and returns random rgb """
     r = random.randrange(255)
     g = random.randrange(255)
@@ -154,14 +166,105 @@ def color_randomizer():
     return (r, g, b)
 
 
+def color_palette_inator():
+    """ generates a complete color palette of HSL (dict) """
+    palette = {
+        "primary": (),
+        "background": (),
+        "text": (),
+        "alerts": {
+            "success": (),
+            "warning": (),
+            "failure": (),
+        },
+        "links": {
+            "link": (),
+            "visited": (),
+            "hover": (),
+        },
+        "triad": {
+            "color1": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            },
+            "color2": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            }
+        },
+        "tertiary": {
+            "color1": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            },
+            "color2": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            },
+            "color3": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            }
+        },
+    }
+    primary_rgb = random_rgb()
+    palette["primary"] = rgb_to_hsl(primary_rgb)
+    return palette
+
+
 if __name__ == "__main__":
     print(rgb_to_hex(10, 10, 10))
     print(rgb_to_hex("rgb(10 0 0)"))
     rgb = hex_to_rgb("#336699")
     print(rgb_as_string(rgb))
-    # rgb = hex_to_rgb("#336699")
+    rgb = hex_to_rgb("#336699")
+    print(f"#336699 as rgb is rgb{rgb}")
     hsl = rgb_to_hsl(rgb)
     print(hsl_as_string(hsl))
     random.seed(1)
-    for i in range(10):
-        print(color_randomizer())
+    for i in range(3):
+        print(random_rgb())
+    palette = color_palette_inator()
+    # print(palette)
+    rgb = random_rgb()
+    hsl = rgb_to_hsl(rgb)
+    print(f"hsl = {hsl}")
+    bg = get_background_from_hsl(hsl)
+    print(f"background color is {bg}")
+    text = get_text_from_hsl(hsl)
+    print(f"text color is {text}")
