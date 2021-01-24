@@ -24,19 +24,22 @@ from webtools import webtools
 #     # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
 def test_rgb_to_hex_for_black():
-    results = webtools.rgb_to_hex(0,0,0)
+    results = webtools.rgb_to_hex(0, 0, 0)
     expected = "#000000"
     assert results == expected
+
 
 def test_rgb_to_hex_for_white():
     results = webtools.rgb_to_hex(255, 255, 255)
     expected = "#ffffff"
     assert results == expected
 
+
 def test_rgb_to_hex_for_336699():
-    results = webtools.rgb_to_hex(51,102,153)
+    results = webtools.rgb_to_hex(51, 102, 153)
     expected = "#336699"
     assert results == expected
+
 
 def test_rgb_to_hex_for_336699():
     results = webtools.rgb_to_hex("rgb(51,102,153)")
