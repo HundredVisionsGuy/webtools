@@ -242,8 +242,10 @@ def color_palette_inator():
             }
         },
     }
-    primary_rgb = random_rgb()
-    palette["primary"] = rgb_to_hsl(primary_rgb)
+    primary = rgb_to_hsl(random_rgb())
+    palette["primary"] = primary
+    palette["background"] = get_background_from_hsl(primary)
+    palette["text"] = get_text_from_hsl(primary)
     return palette
 
 
@@ -260,7 +262,7 @@ if __name__ == "__main__":
     for i in range(3):
         print(random_rgb())
     palette = color_palette_inator()
-    # print(palette)
+    print(palette)
     rgb = random_rgb()
     hsl = rgb_to_hsl(rgb)
     print(f"hsl = {hsl}")
