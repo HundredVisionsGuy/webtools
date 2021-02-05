@@ -43,6 +43,11 @@ def rgb_to_hex(*args):
         b = "0" + b
     return "#" + r + g + b
 
+def generate_random_hex():
+    color = "#"
+    for i in range(6):
+        color += random.choice(list(hex_map.keys()))
+    return color
 
 def hex_to_rgb(hex):
     """ receives hex (str) -> returns rgb as tuple """
