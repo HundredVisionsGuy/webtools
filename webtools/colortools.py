@@ -257,25 +257,18 @@ def color_palette_inator(color_code=None):
     palette["text"] = get_text_from_hsl(primary)
     return palette
 
+def is_hex(val):
+    result = False
+    result = "#" in val and (len(val) == 7 or len(val) == 4)
+    if not result:
+        return False
+    
+    #check for proper hex digits
+    for i in val:
+        if i != "#" and i not in list(hex_map.keys()):
+            result = False
+    return result
 
 if __name__ == "__main__":
-    print(rgb_to_hex(10, 10, 10))
-    print(rgb_to_hex("rgb(10 0 0)"))
-    rgb = hex_to_rgb("#336699")
-    print(rgb_as_string(rgb))
-    rgb = hex_to_rgb("#336699")
-    print(f"#336699 as rgb is rgb{rgb}")
-    hsl = rgb_to_hsl(rgb)
-    print(hsl_as_string(hsl))
-    random.seed(1)
-    for i in range(3):
-        print(random_rgb())
-    palette = color_palette_inator()
-    print(palette)
-    rgb = random_rgb()
-    hsl = rgb_to_hsl(rgb)
-    print(f"hsl = {hsl}")
-    bg = get_background_from_hsl(hsl)
-    print(f"background color is {bg}")
-    text = get_text_from_hsl(hsl)
-    print(f"text color is {text}")
+    valid_hex = is_hex("#336699")
+    print(valid_hex)

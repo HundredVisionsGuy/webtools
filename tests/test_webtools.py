@@ -17,12 +17,6 @@ import webtools.colortools as color
 #     # import requests
 #     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
 
-
-# def test_content(response):
-#     """Sample pytest test function with the pytest fixture as an argument."""
-#     # from bs4 import BeautifulSoup
-#     # assert 'GitHub' in BeautifulSoup(response.content).title.string
-
 def test_rgb_to_hex_for_black():
     results = color.rgb_to_hex(0, 0, 0)
     expected = "#000000"
@@ -53,3 +47,12 @@ def test_rgb_to_hsl_deepSkyBlue():
 
 def test_rgb_to_hsl_for_bada55():
     assert color.rgb_to_hsl((186, 218, 85)) == (74, 64, 59)
+
+def test_is_hex_for_no_hash():
+    assert color.is_hex("336699") == False
+
+def test_is_hex_for_valid_hex():
+    assert color.is_hex("#336699")
+
+def test_is_hex_for_invalid_not_hex_digit():
+    assert not color.is_hex("#3366lh")
