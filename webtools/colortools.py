@@ -43,11 +43,13 @@ def rgb_to_hex(*args):
         b = "0" + b
     return "#" + r + g + b
 
+
 def generate_random_hex():
     color = "#"
     for i in range(6):
         color += random.choice(list(hex_map.keys()))
     return color
+
 
 def hex_to_rgb(hex):
     """ receives hex (str) -> returns rgb as tuple """
@@ -188,6 +190,17 @@ def color_palette_inator(color_code=None):
             "hover": (),
         },
         "triad": {
+            "primary": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            },
             "color1": {
                 "color": (),
                 "shades": {
@@ -255,20 +268,74 @@ def color_palette_inator(color_code=None):
     palette["primary"] = primary
     palette["background"] = get_background_from_hsl(primary)
     palette["text"] = get_text_from_hsl(primary)
+
+    # Get triad
+    triad = get_triad(primary)
+    # use triad to append colors to triad keys
+    palette["triad"]["primary"]["color"] = triad[0]
+    palette["triad"]["color1"]["color"] = triad[1]
+    palette["triad"]["color2"]["color"] = triad[2]
+
+    # Get tertiary
+    tertiary = get_tertiary(primary)
     return palette
+
 
 def is_hex(val):
     result = False
     result = "#" in val and (len(val) == 7 or len(val) == 4)
     if not result:
         return False
-    
-    #check for proper hex digits
+
+    # check for proper hex digits
     for i in val:
         if i != "#" and i not in list(hex_map.keys()):
             result = False
     return result
 
+
+def get_shades(hsl, num=6):
+    h, s, l = hsl
+    l -= 20
+    shades = []
+    for i in range(num):
+        shades.append((h, s, l))
+        l += 10
+    return shades
+
+
+def get_triad(hsl):
+    h, s, l = hsl
+    triad = [hsl, ]
+    for i in range(2):
+        h += 120
+        h = h % 360
+        triad.append((h, s, l))
+    return triad
+
+
+def get_tertiary(hsl):
+    h, s, l = hsl
+    tertiary = [hsl, ]
+    for i in range(3):
+        h += 90
+        h = h % 360
+        tertiary.append((h, s, l))
+    return tertiary
+
+
 if __name__ == "__main__":
-    valid_hex = is_hex("#336699")
+    my_hex = "#336699"
+    valid_hex = is_hex(my_hex)
     print(valid_hex)
+    my_rgb = hex_to_rgb(my_hex)
+    my_hsl = rgb_to_hsl(my_rgb)
+    # print(my_hsl)
+    # shades = get_shades(my_hsl)
+    # print(shades)
+    # triad = get_triad(my_hsl)
+    # print(triad)
+    # tertiary = get_tertiary(my_hsl)
+    # print(tertiary)
+    # palette = color_palette_inator()
+    color_palette_inator("#336699")
