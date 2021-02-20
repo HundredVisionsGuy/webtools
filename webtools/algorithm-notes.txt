@@ -1,3 +1,11 @@
+How to modify HSL {
+  secondary color, rotate hue by 180
+  tertiary, rotate hue by 120 - 2x
+  shades {
+    change L by 10 (2x on both sides)
+  }
+}
+
 RGB to HSL
 Obtaining HSL values from RGB or hex is a bit more challenging because there’s a larger formula involved. First, we must divide the red, green, and blue by 255 to use values between 0 and 1. Then we find the minimum and maximum of those values (cmin and cmax) as well as the difference between them (delta). We need that result as part of calculating the hue and saturation. Right after the delta, let’s initialize the hue (h), saturation (s), and lightness (l).
 
