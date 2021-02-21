@@ -4,8 +4,10 @@ import random
 import colortools as color
 import clerk
 
+
 def create_color_palette(color=None):
     return color
+
 
 def create_base_css():
     print("You can either choose a primary color or let us randomize one for you.")
@@ -25,6 +27,7 @@ def create_base_css():
 
     my_palette = color.color_palette_inator(primary)
     print(my_palette)
+
 
 if __name__ == "__main__":
     create_base_css()

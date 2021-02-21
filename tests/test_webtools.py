@@ -63,11 +63,11 @@ def test_is_hex_for_invalid_not_hex_digit():
     assert not color.is_hex("#3366lh")
 
 
-def test_get_triad_for_210_50_40():
-    assert color.get_triad((210, 50, 40)) == [(
+def test_get_triadic_for_210_50_40():
+    assert color.get_triadic((210, 50, 40)) == [(
         210, 50, 40), (330, 50, 40), (90, 50, 40)]
 
 
-def test_get_tertiary_for_210_50_40():
-    assert color.get_tertiary((210, 50, 40)) == [(
+def test_get_tetradic_for_210_50_40():
+    assert color.get_tetradic((210, 50, 40)) == [(
         210, 50, 40), (300, 50, 40), (30, 50, 40), (120, 50, 40)]

@@ -189,7 +189,7 @@ def color_palette_inator(color_code=None):
             "visited": (),
             "hover": (),
         },
-        "triad": {
+        "triadic": {
             "primary": {
                 "color": (),
                 "shades": {
@@ -224,7 +224,18 @@ def color_palette_inator(color_code=None):
                 }
             }
         },
-        "tertiary": {
+        "tetradic": {
+            "primary": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                },
+            },
             "color1": {
                 "color": (),
                 "shades": {
@@ -270,14 +281,26 @@ def color_palette_inator(color_code=None):
     palette["text"] = get_text_from_hsl(primary)
 
     # Get triad
-    triad = get_triad(primary)
-    # use triad to append colors to triad keys
-    palette["triad"]["primary"]["color"] = triad[0]
-    palette["triad"]["color1"]["color"] = triad[1]
-    palette["triad"]["color2"]["color"] = triad[2]
+    triadic = get_triadic(primary)
+    # use triadic colors to append colors to triadic keys
+    palette["triadic"]["primary"]["color"] = triadic[0]
+    set_color_shades(palette["triadic"]["primary"]["shades"], triadic[0])
+    palette["triadic"]["color1"]["color"] = triadic[1]
+    set_color_shades(palette["triadic"]["color1"]["shades"], triadic[1])
+    palette["triadic"]["color2"]["color"] = triadic[2]
+    set_color_shades(palette["triadic"]["color2"]["shades"], triadic[2])
 
     # Get tertiary
-    tertiary = get_tertiary(primary)
+    tetradic = get_tetradic(primary)
+    # use tetradic colors to append to tetradic keys
+    palette["tetradic"]["primary"]["color"] = tetradic[0]
+    set_color_shades(palette["tetradic"]["primary"]["shades"], tetradic[0])
+    palette["tetradic"]["color1"]["color"] = tetradic[1]
+    set_color_shades(palette["tetradic"]["color1"]["shades"], tetradic[1])
+    palette["tetradic"]["color2"]["color"] = tetradic[2]
+    set_color_shades(palette["tetradic"]["color2"]["shades"], tetradic[2])
+    palette["tetradic"]["color3"]["color"] = tetradic[3]
+    set_color_shades(palette["tetradic"]["color3"]["shades"], tetradic[3])
     return palette
 
 
@@ -304,7 +327,7 @@ def get_shades(hsl, num=6):
     return shades
 
 
-def get_triad(hsl):
+def get_triadic(hsl):
     h, s, l = hsl
     triad = [hsl, ]
     for i in range(2):
@@ -314,14 +337,21 @@ def get_triad(hsl):
     return triad
 
 
-def get_tertiary(hsl):
+def get_tetradic(hsl):
     h, s, l = hsl
-    tertiary = [hsl, ]
+    tetradic = [hsl, ]
     for i in range(3):
         h += 90
         h = h % 360
-        tertiary.append((h, s, l))
-    return tertiary
+        tetradic.append((h, s, l))
+    return tetradic
+
+
+def set_color_shades(shades, hsl):
+    """ uses hsl color to set the shades """
+    shade_list = get_shades(hsl)
+    for pos, shade in enumerate(shades.keys()):
+        shades[shade] = shade_list[pos]
 
 
 if __name__ == "__main__":
@@ -333,9 +363,9 @@ if __name__ == "__main__":
     # print(my_hsl)
     # shades = get_shades(my_hsl)
     # print(shades)
-    # triad = get_triad(my_hsl)
+    # triad = get_triadic(my_hsl)
     # print(triad)
-    # tertiary = get_tertiary(my_hsl)
-    # print(tertiary)
+    # tetradic = get_tetradic(my_hsl)
+    # print(tetradic)
     # palette = color_palette_inator()
     color_palette_inator("#336699")
