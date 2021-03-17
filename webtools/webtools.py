@@ -2,7 +2,7 @@
 import math
 import random
 import colortools as color
-import clerk
+# import clerk
 
 def create_color_palette(color=None):
     return color
@@ -13,16 +13,14 @@ def create_base_css():
     is_hex = False
     while not is_hex:
         primary = input("Enter hex code or press enter for random: ")
-        is_hex = "#" in primary and (len(primary) == 7 or len(primary) == 4)
-        if primary.strip() or not is_hex:
-            print("Your hex code is not a true hex code.")
         if not primary.strip():
+            # user hit enter, signifying they want a random color
+            primary = color.generate_random_hex()
+            print(f"The random color we selected for you is {primary}.")
             break
-
-    if not is_hex:
-        primary = color.generate_random_hex()
-        print(f"The random color we selected for you is {primary}.")
-
+        # check user entry to make sure it meets hex code requirements
+        is_hex = color.is_hex(primary)
+        
     my_palette = color.color_palette_inator(primary)
     print(my_palette)
 
