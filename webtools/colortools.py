@@ -368,4 +368,5 @@ if __name__ == "__main__":
     # tetradic = get_tetradic(my_hsl)
     # print(tetradic)
     # palette = color_palette_inator()
-    color_palette_inator("#336699")
+    my_palette = color_palette_inator("#336699")
+    print(my_palette)
