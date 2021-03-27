@@ -179,7 +179,17 @@ def random_rgb():
 def color_palette_inator(color_code=None):
     """ generates a complete color palette of HSL (dict) """
     palette = {
-        "primary": (),
+        "primary": {
+            "color": (),
+            "shades": {
+                "dark": (),
+                "med-dark": (),
+                "med": (),
+                "med-light": (),
+                "light": (),
+                "lightest": (),
+            }
+        }
         "background": (),
         "text": (),
         "alerts": {
@@ -193,17 +203,6 @@ def color_palette_inator(color_code=None):
             "hover": (),
         },
         "triadic": {
-            "primary": {
-                "color": (),
-                "shades": {
-                    "dark": (),
-                    "med-dark": (),
-                    "med": (),
-                    "med-light": (),
-                    "light": (),
-                    "lightest": (),
-                }
-            },
             "color1": {
                 "color": (),
                 "shades": {
