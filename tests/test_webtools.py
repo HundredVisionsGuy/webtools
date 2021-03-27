@@ -8,14 +8,23 @@ import pytest
 import webtools.colortools as color
 
 
-# @pytest.fixture
-# def response():
-#     """Sample pytest fixture.
+@pytest.fixture
+def indigo_rgb():
+    indigo = "#4b0082"
+    indigo_rgb = color.hex_to_rgb(indigo)
+    return indigo_rgb
 
-#     See more at: http://doc.pytest.org/en/latest/fixture.html
-#     """
-#     # import requests
-#     # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+def test_hex_to_decimal_for_bc():
+    bc_hex = "bc"
+    expected = 188
+    results = color.hex_to_decimal(bc_hex)
+    assert expected == results
+
+def test_hex_to_decimal_for_CB():
+    cb_hex = "CB"
+    expected = 203
+    results = color.hex_to_decimal(cb_hex)
+    assert expected == results
 
 def test_rgb_to_hex_for_black():
     results = color.rgb_to_hex(0, 0, 0)
@@ -56,3 +65,9 @@ def test_is_hex_for_valid_hex():
 
 def test_is_hex_for_invalid_not_hex_digit():
     assert not color.is_hex("#3366lh")
+
+def test_contrast_ratio_for_inverted_indigo_white(indigo_rgb):
+    expected = 12.95
+    results = color.contrast_ratio("#4B0082", "#ffffff")
+    assert expected == results
+

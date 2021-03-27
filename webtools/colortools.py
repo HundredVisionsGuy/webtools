@@ -49,13 +49,14 @@ def generate_random_hex():
         color += random.choice(list(hex_map.keys()))
     return color
 
-def hex_to_rgb(hex):
+def hex_to_rgb(hex_code):
     """ receives hex (str) -> returns rgb as tuple """
-    if "#" in hex[0]:
-        hex = hex[1:]
-    r = hex[:2]
-    g = hex[2:4]
-    b = hex[4:]
+    hex_code = hex_code.lower()
+    if "#" in hex_code[0]:
+        hex_code = hex_code[1:]
+    r = hex_code[:2]
+    g = hex_code[2:4]
+    b = hex_code[4:]
 
     r = hex_to_decimal(r)
     g = hex_to_decimal(g)
@@ -71,6 +72,9 @@ def rgb_as_string(rgb):
 
 
 def hex_to_decimal(c):
+    # make sure to convert to lower case
+    # so FF becomes ff
+    c = c.lower()
     ones = hex_map[c[1]]
     sixteens = hex_map[c[0]] * 16
     return sixteens + ones
@@ -187,7 +191,7 @@ def color_palette_inator(color_code=None):
             "visited": (),
             "hover": (),
         },
-        "triad": {
+        "triadic": {
             "color1": {
                 "color": (),
                 "shades": {
@@ -211,7 +215,7 @@ def color_palette_inator(color_code=None):
                 }
             }
         },
-        "tertiary": {
+        "tetradic": {
             "color1": {
                 "color": (),
                 "shades": {
@@ -268,6 +272,36 @@ def is_hex(val):
         if i != "#" and i not in list(hex_map.keys()):
             result = False
     return result
+
+def get_relative_luminance(val):
+    val /= 255
+    if val <= 0.03928:
+        return val / 12.92
+    else:
+        return ((val + 0.055) / 1.055)**2.4
+              
+def luminance(rgb):
+    r, g, b = rgb
+    r = get_relative_luminance(r)
+    g = get_relative_luminance(g)
+    b = get_relative_luminance(b)
+    return r * 0.2126 + g * 0.7152 + b * 0.0722
+    
+def contrast_ratio(hex1, hex2):
+    rgb1 = hex_to_rgb(hex1)
+    rgb2 = hex_to_rgb(hex2)
+    l1 = luminance(rgb1)
+    l2 = luminance(rgb2)
+    # Make sure l1 is the lighter of the two or swap them
+    if l1 < l2:
+        temp = l1
+        l1 = l2
+        l2 = temp
+    ratio = (l1 + 0.05) / (l2 + 0.05)
+    # get the ratio to 2 decimal places without rounding
+    # take it to 3rd decimal place, then truncate (3rd has been rounded)
+    ratio = format(ratio, ".3f")[:-1]
+    return float(ratio)
 
 if __name__ == "__main__":
     valid_hex = is_hex("#336699")
