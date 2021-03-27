@@ -2,7 +2,8 @@
     From your color palette,
     add your background color and text color to the body element
 */
-
+:root {
+}
 body {
     background-color: var(--bg-color);
     color: var(--text);
@@ -42,4 +43,13 @@ a:visited {
 }
 a:hover {
     color: var(--link-hover);
+}
+.success {
+    color: var(--success);
+}
+.warning {
+    color: var(--warning);
+}
+.failure {
+    color: var(--failure);
 }
