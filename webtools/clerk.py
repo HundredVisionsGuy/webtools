@@ -7,13 +7,12 @@ import glob
 from zipfile import ZipFile
 from datetime import datetime
 from pathlib import Path
-import codehsinator.page as site
-import codehsinator.config as config
-from codehsinator.locators import MainPageLocators, CoursePageLocators, StudentPageLocators
-from selenium import webdriver
+# import codehsinator.page as site
+# import codehsinator.config as config
+# from codehsinator.locators import MainPageLocators, CoursePageLocators, StudentPageLocators
+# from selenium import webdriver
 
 working_dir = Path.cwd()
-
 
 
 def file_exists(filename):

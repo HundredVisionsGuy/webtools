@@ -43,6 +43,7 @@ def rgb_to_hex(*args):
         b = "0" + b
     return "#" + r + g + b
 
+
 def generate_random_hex():
     color = "#"
     for i in range(6):
@@ -192,6 +193,17 @@ def color_palette_inator(color_code=None):
             "hover": (),
         },
         "triadic": {
+            "primary": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                }
+            },
             "color1": {
                 "color": (),
                 "shades": {
@@ -216,6 +228,17 @@ def color_palette_inator(color_code=None):
             }
         },
         "tetradic": {
+            "primary": {
+                "color": (),
+                "shades": {
+                    "dark": (),
+                    "med-dark": (),
+                    "med": (),
+                    "med-light": (),
+                    "light": (),
+                    "lightest": (),
+                },
+            },
             "color1": {
                 "color": (),
                 "shades": {
@@ -259,15 +282,38 @@ def color_palette_inator(color_code=None):
     palette["primary"] = primary
     palette["background"] = get_background_from_hsl(primary)
     palette["text"] = get_text_from_hsl(primary)
+
+    # Get triad
+    triadic = get_triadic(primary)
+    # use triadic colors to append colors to triadic keys
+    palette["triadic"]["primary"]["color"] = triadic[0]
+    set_color_shades(palette["triadic"]["primary"]["shades"], triadic[0])
+    palette["triadic"]["color1"]["color"] = triadic[1]
+    set_color_shades(palette["triadic"]["color1"]["shades"], triadic[1])
+    palette["triadic"]["color2"]["color"] = triadic[2]
+    set_color_shades(palette["triadic"]["color2"]["shades"], triadic[2])
+
+    # Get tertiary
+    tetradic = get_tetradic(primary)
+    # use tetradic colors to append to tetradic keys
+    palette["tetradic"]["primary"]["color"] = tetradic[0]
+    set_color_shades(palette["tetradic"]["primary"]["shades"], tetradic[0])
+    palette["tetradic"]["color1"]["color"] = tetradic[1]
+    set_color_shades(palette["tetradic"]["color1"]["shades"], tetradic[1])
+    palette["tetradic"]["color2"]["color"] = tetradic[2]
+    set_color_shades(palette["tetradic"]["color2"]["shades"], tetradic[2])
+    palette["tetradic"]["color3"]["color"] = tetradic[3]
+    set_color_shades(palette["tetradic"]["color3"]["shades"], tetradic[3])
     return palette
+
 
 def is_hex(val):
     result = False
     result = "#" in val and (len(val) == 7 or len(val) == 4)
     if not result:
         return False
-    
-    #check for proper hex digits
+
+    # check for proper hex digits
     for i in val:
         if i != "#" and i not in list(hex_map.keys()):
             result = False
@@ -303,6 +349,56 @@ def contrast_ratio(hex1, hex2):
     ratio = format(ratio, ".3f")[:-1]
     return float(ratio)
 
+def get_shades(hsl, num=6):
+    h, s, l = hsl
+    l -= 20
+    shades = []
+    for i in range(num):
+        shades.append((h, s, l))
+        l += 10
+    return shades
+
+
+def get_triadic(hsl):
+    h, s, l = hsl
+    triad = [hsl, ]
+    for i in range(2):
+        h += 120
+        h = h % 360
+        triad.append((h, s, l))
+    return triad
+
+
+def get_tetradic(hsl):
+    h, s, l = hsl
+    tetradic = [hsl, ]
+    for i in range(3):
+        h += 90
+        h = h % 360
+        tetradic.append((h, s, l))
+    return tetradic
+
+
+def set_color_shades(shades, hsl):
+    """ uses hsl color to set the shades """
+    shade_list = get_shades(hsl)
+    for pos, shade in enumerate(shades.keys()):
+        shades[shade] = shade_list[pos]
+
+
 if __name__ == "__main__":
-    valid_hex = is_hex("#336699")
+    my_hex = "#336699"
+    valid_hex = is_hex(my_hex)
     print(valid_hex)
+    my_rgb = hex_to_rgb(my_hex)
+    my_hsl = rgb_to_hsl(my_rgb)
+    # print(my_hsl)
+    # shades = get_shades(my_hsl)
+    # print(shades)
+    # triad = get_triadic(my_hsl)
+    # print(triad)
+    # tetradic = get_tetradic(my_hsl)
+    # print(tetradic)
+    # palette = color_palette_inator()
+    my_palette = color_palette_inator("#336699")
+    print(my_palette)
