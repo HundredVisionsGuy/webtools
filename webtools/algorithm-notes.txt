@@ -63,3 +63,22 @@ function RGBToHSL(r,g,b) {
 
   return "hsl(" + h + "," + s + "%," + l + "%)";
 }
+
+// About link colors {
+  - Strategem: copy most common link colors and convert to HSL to see if there's an HSL pattern
+  - Common Link Colors & HSL equivalent {
+    * standard Blue: #0000ff: 	hsl(240, 100%, 50%)
+    * different blue: #2077d3:	hsl(211, 74%, 48%)
+    * red: #f6491a: 	hsl(13, 92%, 53%)
+    * orange: #f8b147: 	hsl(36, 93%, 63%)
+  }
+  - Algorithm {
+    * SET a high contrast goal to 7
+    * WHILE contrast is less than 7
+      * GET next color in (tetradic colors) 
+        * convert to HSL for the hue
+        * set S to random value between 75 and 90
+        * set L to 50
+        * get contrast ratio
+  }
+}

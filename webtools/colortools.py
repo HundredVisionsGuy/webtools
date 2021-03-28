@@ -43,6 +43,31 @@ def rgb_to_hex(*args):
         b = "0" + b
     return "#" + r + g + b
 
+def hsl_to_rgb(hsl):
+    # From HSL to RGB color conversion (https://www.rapidtables.com/convert/color/hsl-to-rgb.html)
+
+    h, s, l = hsl
+    s /= 100
+    l /= 100
+    c = (1 - abs(2*l - 1)) * s
+    x = c * (1 - abs((h/60) % 2 - 1))
+    m = l - c / 2
+    if h < 60:
+        r1, g1, b1 = (c, x, 0)
+    elif h < 120:
+        r1, g1, b1 = (x, c, 0)
+    elif h < 180:
+        r1, g1, b1 = (0, c, x)
+    elif h < 240:
+        r1, g1, b1 = (0, x, c)
+    elif h < 300:
+        r1, g1, b1 = (x, 0, c)
+    else:
+        r1, g1, b1 = (c, 0, x)
+    r = int((r1 + m) * 255)
+    g = int((g1 + m) * 255)
+    b = int((b1 + m) * 255)
+    return r, g, b 
 
 def generate_random_hex():
     color = "#"
@@ -189,7 +214,7 @@ def color_palette_inator(color_code=None):
                 "light": (),
                 "lightest": (),
             }
-        }
+        },
         "background": (),
         "text": (),
         "alerts": {
@@ -278,15 +303,15 @@ def color_palette_inator(color_code=None):
     elif "#" in color_code:
         primary = hex_to_rgb(color_code)
         primary = rgb_to_hsl(primary)
-    palette["primary"] = primary
+    palette["primary"]["color"] = primary
     palette["background"] = get_background_from_hsl(primary)
     palette["text"] = get_text_from_hsl(primary)
 
     # Get triad
     triadic = get_triadic(primary)
     # use triadic colors to append colors to triadic keys
-    palette["triadic"]["primary"]["color"] = triadic[0]
-    set_color_shades(palette["triadic"]["primary"]["shades"], triadic[0])
+    palette["primary"]["color"] = triadic[0]
+    set_color_shades(palette["primary"]["shades"], triadic[0])
     palette["triadic"]["color1"]["color"] = triadic[1]
     set_color_shades(palette["triadic"]["color1"]["shades"], triadic[1])
     palette["triadic"]["color2"]["color"] = triadic[2]
@@ -295,8 +320,6 @@ def color_palette_inator(color_code=None):
     # Get tertiary
     tetradic = get_tetradic(primary)
     # use tetradic colors to append to tetradic keys
-    palette["tetradic"]["primary"]["color"] = tetradic[0]
-    set_color_shades(palette["tetradic"]["primary"]["shades"], tetradic[0])
     palette["tetradic"]["color1"]["color"] = tetradic[1]
     set_color_shades(palette["tetradic"]["color1"]["shades"], tetradic[1])
     palette["tetradic"]["color2"]["color"] = tetradic[2]
@@ -384,6 +407,17 @@ def set_color_shades(shades, hsl):
     for pos, shade in enumerate(shades.keys()):
         shades[shade] = shade_list[pos]
 
+def get_link_colors(primary, background):
+    tetradics = get_tetradic(primary)
+    contrast_goal = 7
+    contrast = 0
+    while contrast < contrast_goal:
+        for color in tetradics:
+            c_hsl = rgb_to_hsl(color)
+            rand_s = random.randrange(75, 91)
+            l = 50
+            c_hsl = (c_hsl[0], rand_s, l)
+            c_hex = hsl_to_rgb()
 
 if __name__ == "__main__":
     my_hex = "#336699"

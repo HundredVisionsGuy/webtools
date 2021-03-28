@@ -14,6 +14,12 @@ def indigo_rgb():
     indigo_rgb = color.hex_to_rgb(indigo)
     return indigo_rgb
 
+@pytest.fixture
+def palette336699():
+    code = "#336699"
+    palette = color.color_palette_inator(code)
+    return palette
+
 def test_hex_to_decimal_for_bc():
     bc_hex = "bc"
     expected = 188
@@ -85,3 +91,32 @@ def test_get_triadic_for_210_50_40():
 def test_get_tetradic_for_210_50_40():
     assert color.get_tetradic((210, 50, 40)) == [(
         210, 50, 40), (300, 50, 40), (30, 50, 40), (120, 50, 40)]
+
+def test_hsl_to_rgb_for_210_50_40():
+    hsl = (210, 50, 40)
+    results = color.hsl_to_rgb(hsl)
+    expected = (51, 102, 153)
+    assert results == expected
+
+def test_hsl_to_rb_for_various_values():
+    black = (0, 0, 0)
+    white = (0, 0, 100)
+    lime = (120, 100, 50)
+    silver = (0, 0, 75)
+    yellow = (60, 100, 50)
+    assert color.hsl_to_rgb(black) == (0, 0, 0)
+    assert color.hsl_to_rgb(white) == (255, 255, 255)
+    assert color.hsl_to_rgb(lime) == (0, 255, 0)
+    assert color.hsl_to_rgb(silver) == (191, 191, 191)
+    assert color.hsl_to_rgb(yellow) == (255, 255, 0)
+    
+    # gray = (0, 0, 50)
+    # maroon = (0, 100, 25)
+    # olive = (60, 100, 25)
+    # assert color.hsl_to_rgb(gray) ==  (128, 128, 128)
+    # assert color.hsl_to_rgb(maroon) == (128, 0, 0)
+    # assert color.hsl_to_rgb(olive) == (128, 128, 0)
+
+    # NOTE: 1 HSL could represent up to 5 different RGB values
+    #       same thing would go for hex, so converting
+    #       from hsl to rgb or hex is not exact
