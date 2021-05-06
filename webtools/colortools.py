@@ -28,12 +28,13 @@ def rgb_to_hex(*args):
             rgb = args[0]
             r, g, b = extract_rgb_from_string(rgb)
         except:
-            # throw an exception
             return "err"
+
     # Convert r, g, b to hex
     r = hex(int(r))[2:]
     g = hex(int(g))[2:]
     b = hex(int(b))[2:]
+
     # prepend 0 if necessary
     if len(r) == 1:
         r = "0" + r
@@ -433,5 +434,10 @@ if __name__ == "__main__":
     # tetradic = get_tetradic(my_hsl)
     # print(tetradic)
     # palette = color_palette_inator()
-    my_palette = color_palette_inator("#336699")
-    print(my_palette)
+    my_palette = color_palette_inator()
+    r, g, b = my_palette["background"]
+    bg = rgb_to_hex(r, g, b)
+    r,g,b = my_palette["text"]
+    text = rgb_to_hex(r,g,b)
+    print("Background: " + bg)
+    print("Text: " + text)
